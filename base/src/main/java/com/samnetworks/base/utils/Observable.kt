@@ -2,7 +2,7 @@ package com.samnetworks.base.utils
 
 import kotlin.properties.Delegates
 
-class SamNetworksObserver<T> {
+class Observable<T> {
     private val observer = mutableListOf<(T) -> Unit>()
     private var value: T? by Delegates.observable(null) { _, _, newValue ->
         observer.forEach {
