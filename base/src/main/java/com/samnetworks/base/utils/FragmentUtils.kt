@@ -13,7 +13,7 @@ object FragmentUtils {
         if (prev != null) {
             ft.remove(prev)
         }
-        ft.addToBackStack(null)
+        ft.addToBackStack(tag)
         dialogFragment.show(ft, tag)
     }
 

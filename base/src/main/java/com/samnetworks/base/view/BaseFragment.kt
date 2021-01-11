@@ -1,4 +1,4 @@
-package com.samnetworks.base.mvvm
+package com.samnetworks.base.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,7 +10,9 @@ import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.samnetworks.base.viewmodel.DaggerViewModelProviderFactory
+import com.samnetworks.base.viewmodel.dagger.DaggerViewModelProviderFactory
+import dagger.android.AndroidInjection
+import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 
 abstract class BaseFragment<B: ViewDataBinding,V: ViewModel>:Fragment() {
@@ -20,12 +22,12 @@ abstract class BaseFragment<B: ViewDataBinding,V: ViewModel>:Fragment() {
     protected lateinit var binding:B
     protected lateinit var viewModel:V
 
-    override fun onCreateView(
+    final override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        injectFragment()
+    ): View {
+        AndroidSupportInjection.inject(this)
         initializeViewModel()
         val binding = initializeViewBinding(inflater,container)
         onFragmentInitialised(binding)
@@ -37,7 +39,7 @@ abstract class BaseFragment<B: ViewDataBinding,V: ViewModel>:Fragment() {
     }
 
     private fun initializeViewBinding(inflater: LayoutInflater, container: ViewGroup?) :B{
-        binding = DataBindingUtil.inflate<B>(inflater,getLayoutId(),container,false)
+        binding = DataBindingUtil.inflate(inflater,getLayoutId(),container,false)
         return binding
     }
 
@@ -47,5 +49,4 @@ abstract class BaseFragment<B: ViewDataBinding,V: ViewModel>:Fragment() {
     protected abstract fun getLayoutId():Int
 
     protected abstract fun getViewModel():Class<V>
-    protected abstract fun injectFragment()
 }

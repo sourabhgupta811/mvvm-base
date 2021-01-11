@@ -1,4 +1,4 @@
-package com.samnetworks.base.viewmodel
+package com.samnetworks.base.viewmodel.dagger
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
