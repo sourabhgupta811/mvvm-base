@@ -1,7 +1,7 @@
 package com.samnetworks.base.application
 
 import android.app.Application
-import com.samnetworks.base.dagger.DaggerComponent
+import com.samnetworks.base.dagger.IDaggerComponent
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
 import javax.inject.Inject
@@ -15,7 +15,7 @@ abstract class MvvmApplication:Application(),HasAndroidInjector {
         provideDaggerComponent().inject(this)
     }
 
-    abstract fun provideDaggerComponent():DaggerComponent
+    abstract fun provideDaggerComponent():IDaggerComponent
 
     override fun androidInjector(): DispatchingAndroidInjector<Any> {
         return dispatchingAndroidInjector
