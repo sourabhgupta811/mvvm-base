@@ -15,7 +15,7 @@ abstract class MvvmApplication:Application(),HasAndroidInjector {
         provideDaggerComponent().inject(this)
     }
 
-    abstract fun provideDaggerComponent():IDaggerComponent
+    abstract fun provideDaggerComponent():IDaggerComponent<MvvmApplication>
 
     override fun androidInjector(): DispatchingAndroidInjector<Any> {
         return dispatchingAndroidInjector
