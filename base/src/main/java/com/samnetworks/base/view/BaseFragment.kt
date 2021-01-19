@@ -18,8 +18,9 @@ import javax.inject.Inject
 abstract class BaseFragment<B: ViewDataBinding,V: ViewModel>:Fragment() {
     @Inject
     lateinit var daggerViewModelFactory: DaggerViewModelProviderFactory
+    private var _binding: B? = null
 
-    protected lateinit var binding:B
+    protected val binding get() = _binding!!
     protected lateinit var viewModel:V
 
     final override fun onCreateView(
@@ -39,11 +40,16 @@ abstract class BaseFragment<B: ViewDataBinding,V: ViewModel>:Fragment() {
     }
 
     private fun initializeViewBinding(inflater: LayoutInflater, container: ViewGroup?) :B{
-        binding = DataBindingUtil.inflate(inflater,getLayoutId(),container,false)
+        _binding = DataBindingUtil.inflate(inflater,getLayoutId(),container,false)
         return binding
     }
 
     abstract fun onFragmentInitialised(binding:B)
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 
     @LayoutRes
     protected abstract fun getLayoutId():Int

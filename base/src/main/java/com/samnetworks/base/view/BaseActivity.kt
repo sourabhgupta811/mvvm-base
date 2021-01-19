@@ -14,9 +14,11 @@ import javax.inject.Inject
 abstract class BaseActivity<B:ViewDataBinding,V:ViewModel>:AppCompatActivity() {
     @Inject
     lateinit var daggerViewModelFactory: DaggerViewModelProviderFactory
+    private var _binding: B? = null
 
-    protected lateinit var binding:B
+    protected val binding get() = _binding!!
     protected lateinit var viewModel: V
+
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
@@ -29,7 +31,12 @@ abstract class BaseActivity<B:ViewDataBinding,V:ViewModel>:AppCompatActivity() {
     }
 
     private fun initializeViewBinding() {
-        binding = DataBindingUtil.setContentView(this,getLayoutId())
+        _binding = DataBindingUtil.setContentView(this,getLayoutId())
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 
     @LayoutRes
