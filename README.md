@@ -1,5 +1,5 @@
 # mvvm-base
-Base classes to quickly kick off android projects
+Base classes to quickly kick off android projects with MVVM Pattern with deggaer and databinding
 
 <strong> How to use: </strong><b>
     
