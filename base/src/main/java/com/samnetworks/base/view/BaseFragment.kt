@@ -11,7 +11,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.samnetworks.base.viewmodel.dagger.DaggerViewModelProviderFactory
-import dagger.android.AndroidInjection
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 
@@ -31,7 +30,7 @@ abstract class BaseFragment<B: ViewDataBinding,V: ViewModel>:Fragment() {
         AndroidSupportInjection.inject(this)
         initializeViewModel()
         val binding = initializeViewBinding(inflater,container)
-        onFragmentInitialised(binding)
+        onFragmentViewCreated(binding)
         return binding.root
     }
 
@@ -44,15 +43,15 @@ abstract class BaseFragment<B: ViewDataBinding,V: ViewModel>:Fragment() {
         return binding
     }
 
-    abstract fun onFragmentInitialised(binding:B)
-
-    override fun onDestroyView() {
+    final override fun onDestroyView() {
         super.onDestroyView()
+        onFragmentViewDestroyed(binding)
         _binding = null
     }
 
     @LayoutRes
     protected abstract fun getLayoutId():Int
-
     protected abstract fun getViewModel():Class<V>
+    protected abstract fun onFragmentViewCreated(binding:B)
+    protected abstract fun onFragmentViewDestroyed(binding:B)
 }

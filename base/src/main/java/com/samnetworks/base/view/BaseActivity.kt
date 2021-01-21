@@ -19,11 +19,12 @@ abstract class BaseActivity<B:ViewDataBinding,V:ViewModel>:AppCompatActivity() {
     protected val binding get() = _binding!!
     protected lateinit var viewModel: V
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    final override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         initializeViewModel()
         initializeViewBinding()
+        onActivityCreated(binding)
     }
 
     private fun initializeViewModel() {
@@ -34,12 +35,15 @@ abstract class BaseActivity<B:ViewDataBinding,V:ViewModel>:AppCompatActivity() {
         _binding = DataBindingUtil.setContentView(this,getLayoutId())
     }
 
-    override fun onDestroy() {
+    final override fun onDestroy() {
         super.onDestroy()
+        onActivityDestroyed(binding)
         _binding = null
     }
 
     @LayoutRes
     protected abstract fun getLayoutId():Int
     protected abstract fun getViewModel():Class<V>
+    protected abstract fun onActivityCreated(binding: B)
+    protected abstract fun onActivityDestroyed(binding: B)
 }
